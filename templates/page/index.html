@@ -1,0 +1,424 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+    <h1>Дипломные работы по строительству</h1><div id="column-left">
+
+    <div id="block_zakaz">
+        <p>
+            <a href="contact-us/index.html">Уникальная база проектов,<br />
+                не выложенных на сайт. Спрашивайте на<br />
+                <ins><strong>st-diplom@mail.ru</strong></ins></a></p>
+    </div>
+    <style type="text/css">
+        #webme_sidebar_feedback0 input {
+            width: 190px;
+            font-size: 16px;
+        }
+
+        #webme_sidebar_feedback0 textarea {
+            width: 190px;
+            font-size: 16px;
+            font-family: Arial;
+        }
+
+        #webme_sidebar_feedback0 .warning {
+            position: absolute;
+            left: 0px;
+            width: 145px;
+            top: 15%;
+            z-index: 2;
+            margin: 0 0 0 145px;
+            box-shadow: 2px 2px 4px #901d1d;
+            cursor: pointer;
+        }
+        #webme_sidebar_feedback0 .entry_captcha {
+            padding: 0px 0 6px;
+        }
+        #webme_sidebar_feedback0, #webme_sidebar_feedback0 table, #webme_sidebar_feedback0 table td {
+            position: relative;
+        }
+        .wsf_captcha_image_div {
+            width: 77px; float: left;
+        }
+        .wsf_captcha_image_div img {
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        #webme_sidebar_feedback0 input#wsf_captcha0 {
+            width: 50px;
+            float: left;
+            margin: 0 0 0 10px;
+            height: 14px;
+        }
+        .clearLine {
+            clear: both;
+            text-align: left;
+            width: 100%;
+            height: 0px;
+            margin: 0;
+            padding: 0;
+        }
+        #ajax_loading_form0 {
+            margin-left: 5px;
+        }
+    </style>
+    <div class="box feedback feedback_cat">
+
+        <div class="box-heading-fb">
+            Хотите мы абсолютно бесплатно подберем вам дипломный проект под ваши требования?
+        </div>
+
+        <div class="box-content-feedback">
+
+            <div id="webme_sidebar_feedback0" class="middle">
+                <div id="tmp_0"></div>
+                <div id="wsf_enquiry_send_result0"></div>
+                <div id="sidebar_feedback_div0">
+                    <form action="http://st-diplom.ru/index.php?route=module/feedback/feedback" method="post" enctype="multipart/form-data" id="sidebar_feedback0">
+                        <input type="hidden" id="form_id0" name="form_id" value="0" />
+
+
+                        <div class="fb_email">												<input type="text" id="wsf_email0" name="wsf_email" placeholder="Ваш e-mail*" value="" />
+                            <span id="wsf_error_email0" class="warning" style="display:none;"></span></div>
+
+
+
+
+                        <div class="fb_message">
+                            <textarea id="wsf_enquiry0" name="wsf_enquiry" rows="10" placeholder="Требования к проекту*"></textarea>
+                            <span id="wsf_error_enquiry0" class="warning" style="display:none;"></span>
+                        </div>
+
+
+                        <div class="fb_captcha">
+                            <div class="entry_captcha">Введите код с картинки:</div>
+                            <div class="wsf_captcha_image_div">
+                                <img id="wsf_captcha_image_img0" src="#">
+                            </div>
+                            <input type="text" id="wsf_captcha0" name="wsf_captcha" value="" autocomplete="off" />
+                            <span id="wsf_error_captcha0" class="warning" style="display:none;"></span>
+                            <a class="reload_captcha" id="reload_captcha0"><small>Перезагрузить картинку</small></a>
+                            <input type="hidden" id="wsf_captcha_id0" title="" name="wsf_captcha_id" value="4755" />
+                        </div>
+
+
+                        <div class="fb_button"><a class="button-fb" id="feedback_submitter0"><span class="text22">Отправить</span></a></div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript"><!--
+    $(document).ready(function() {
+        $('#webme_sidebar_feedback0').on('focus', 'input, textarea', function() {
+            $(this).parent().find('.warning').delay(1000).fadeOut('slow');
+        });
+
+        $('#webme_sidebar_feedback0').on('click', '.warning', function() {
+            $(this).fadeOut('slow');
+        });
+
+        jQuery.ajax({
+            type: "GET",
+            url: "http://st-diplom.ru/index.php?route=module/feedback/captcha",
+            data: {captcha_id: '4755'},
+            cache: false
+        }).done(function( image ) {
+            jQuery("#wsf_captcha_image_img0").attr('src', 'data:image/jpeg;base64,' + image);
+        });
+
+    });
+
+    $('#wsf_captcha_image_img0').click(function(){
+        var captcha_id = parseInt((Math.random() * 1000) + 1);
+        jQuery('#wsf_captcha_id0').val(captcha_id);
+        jQuery.ajax({
+            type: "GET",
+            url: "http://st-diplom.ru/index.php?route=module/feedback/captcha",
+            data: {captcha_id: captcha_id},
+            cache: false
+        }).done(function( image ) {
+            jQuery("#wsf_captcha_image_img0").attr('src', 'data:image/jpeg;base64,' + image);
+        });
+    });
+
+    $('#reload_captcha0').click(function(){
+        var captcha_id = parseInt((Math.random() * 1000) + 1);
+        jQuery('#wsf_captcha_id0').val(captcha_id);
+        jQuery.ajax({
+            type: "GET",
+            url: "http://st-diplom.ru/index.php?route=module/feedback/captcha",
+            data: {captcha_id: captcha_id},
+            cache: false
+        }).done(function( image ) {
+            jQuery("#wsf_captcha_image_img0").attr('src', 'data:image/jpeg;base64,' + image);
+        });
+    });
+
+    $('#one_more_msg_href0').live('click', function(){
+        $('#wsf_enquiry_send_result0').hide('fast', function() {;
+            $('#sidebar_feedback_div0').show('fast');
+        });
+    });
+
+    $('#feedback_submitter0').click(function(){
+
+        $("input, textarea").blur();
+
+
+        $.ajax({
+            type: 'post',
+            url: 'http://st-diplom.ru/index.php?route=module/feedback/feedback',
+            dataType: 'json',
+            data: $('#sidebar_feedback0').serialize(),
+            beforeSend: function() {
+                $('#feedback_submitter0').after('<img src="http://st-diplom.ru//catalog/view/theme/default/image/loading.gif" id="ajax_loading_form0" />');
+            },
+            complete: function() {
+                $('#ajax_loading_form0').remove();
+            },
+            success: function(data) {
+
+                if (data.error) {
+
+                    if (!data.error_name) { $('#wsf_error_name0').hide(); }
+                    if (!data.error_phone) { $('#wsf_error_phone0').hide(); }
+                    if (!data.error_email) { $('#wsf_error_email0').hide(); }
+                    if (!data.error_enquiry) { $('#wsf_error_enquiry0').hide(); }
+                    if (!data.error_captcha) { $('#wsf_error_captcha0').hide(); }
+
+                    if (data.error_required) {
+                        alert(data.error_required);
+                    }
+                    if (data.error_name) {
+                        $('#wsf_error_name0').html(data.error_name);
+                        $('#wsf_error_name0').show();
+                    }
+                    if (data.error_phone) {
+                        $('#wsf_error_phone0').html(data.error_phone);
+                        $('#wsf_error_phone0').show();
+                    }
+                    if (data.error_email) {
+                        $('#wsf_error_email0').html(data.error_email);
+                        $('#wsf_error_email0').show();
+                    }
+                    if (data.error_enquiry) {
+                        $('#wsf_error_enquiry0').html(data.error_enquiry);
+                        $('#wsf_error_enquiry0').show();
+                    }
+                    if (data.error_captcha) {
+                        $('#wsf_error_captcha0').html(data.error_captcha);
+                        $('#wsf_error_captcha0').show();
+                    }
+                }
+
+                if (data.success) {
+                    $('#wsf_error_name0').hide();
+                    $('#wsf_error_phone0').hide();
+                    $('#wsf_error_email0').hide();
+                    $('#wsf_error_enquiry0').hide();
+                    $('#wsf_error_captcha0').hide();
+
+                    $('#wsf_name0').val('');
+                    $('#wsf_phone0').val('');
+                    $('#wsf_email0').val('');
+                    $('#wsf_enquiry0').val('');
+                    $('#wsf_captcha0').val('');
+
+                    $('#sidebar_feedback_div0').hide();
+
+                    $('#wsf_enquiry_send_result0').html('<div class="success">' + data.result + '</div>');
+                    $('#wsf_enquiry_send_result0').show();
+
+                }
+
+                var captcha_id = parseInt((Math.random() * 1000) + 1);
+                jQuery('#wsf_captcha_id0').val(captcha_id);
+                jQuery.ajax({
+                    type: "GET",
+                    url: "http://st-diplom.ru/index.php?route=module/feedback/captcha",
+                    data: {captcha_id: captcha_id},
+                    cache: false
+                }).done(function( image ) {
+                    jQuery("#wsf_captcha_image_img0").attr('src', 'data:image/jpeg;base64,' + image);
+                });
+
+            }
+        });
+    });
+    //--></script>
+
+
+    <!--<script type="text/javascript" src="https://vk.com/js/api/openapi.js?160"></script>
+
+    <div id="vk_groups"></div>
+    <script type="text/javascript">
+    VK.Widgets.Group("vk_groups", {mode: 3}, 42242358);
+    </script>-->
+</div>
+
+    <div id="content">
+        <div class="box">
+
+
+            <div class="box-homepagecategorywall  ">
+             {% for cat in allCategories %}
+                <div class="homepagecategorywall">
+                    <div class="homecat"><a href="pgs/index.html">{{ cat.name }}</a></div>
+
+                    <ul>
+                    {% for subcat in allSubCat %}
+
+                        {% if subcat.subcat_id == cat.id %}
+                        <li>
+
+                            &nbsp;<a href="pgs/zdaniya-socialno-bytovogo-naznacheniya/index.html">{{ subcat.name }}</a>
+
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <!--  DIY Module Builder By HostJars http://opencart.hostjars.com -->
+        <style>
+            li.jcarousel-item{
+                width: 145px !important;
+            }
+            li {
+                padding-right: 20px;
+            }
+        </style>
+        <div id="carousel0" class="jcarousel-skin-opencart box">
+            <div class="box-heading">Рекомендуемые товары</div>
+            <div class="box-content">
+                <ul class="jcarousel-container box-product">
+                    <li>
+                        <div>
+                            <div class="image"><a href="pgs/mnogoetazhnye-zhilye-doma/16-ehtazhnyjj-zhilojj-dom-ofisnymi-pomeshhenijami-perm.html"><img src="image/cache/150-150/data/PGS-A/00087/16-eht-zhil-dom-ofis-pomeshh-Perm.jpg" alt="16-этажный жилой дом с офисными помещениями в г.Пермь" /></a></div>
+                            <div class="name"><a href="pgs/mnogoetazhnye-zhilye-doma/16-ehtazhnyjj-zhilojj-dom-ofisnymi-pomeshhenijami-perm.html">16-этажный жилой дом с офисными помещениями в г.Пермь</a></div>
+                            <div class="price">
+                                <span class="price-old">5 000 р.</span> <span class="price-new">3 500 р.</span>
+                            </div>
+                            <div class="cart"><input type="button" value="Купить" onclick="addToCart('452');" class="button" /></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="image"><a href="pgs/34-mestnaja-gostinica-s-ofisnymi-pomeshhenijami-ivanovo.html"><img src="image/cache/150-150/data/PGS-b/00090/34-mestnaja-gostinica-ofisnymi-pomeshh.jpg" alt="34-местная гостиница с офисными помещениями в г.Иваново" /></a></div>
+                            <div class="name"><a href="pgs/34-mestnaja-gostinica-s-ofisnymi-pomeshhenijami-ivanovo.html">34-местная гостиница с офисными помещениями в г.Иваново</a></div>
+                            <div class="price">
+                                <span class="price-old">5 000 р.</span> <span class="price-new">3 990 р.</span>
+                            </div>
+                            <div class="cart"><input type="button" value="Купить" onclick="addToCart('385');" class="button" /></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="image"><a href="pgs/14-ehtazhnyjj-zhilojj-dom-so-vstroeno-pristroennymi-pomeshhenijami-ivanovo.html"><img src="image/cache/150-150/data/PGS-A/00070/14-ehtazhnyjj-zhilojj-dom-Ivanovo.jpg" alt="14-этажный жилой дом со встроено-пристроенными помещениями в г.Иваново" /></a></div>
+                            <div class="name"><a href="pgs/14-ehtazhnyjj-zhilojj-dom-so-vstroeno-pristroennymi-pomeshhenijami-ivanovo.html">14-этажный жилой дом со встроено-пристроенными помещениями в г.Иваново</a></div>
+                            <div class="price">
+                                <span class="price-old">4 000 р.</span> <span class="price-new">2 990 р.</span>
+                            </div>
+                            <div class="cart"><input type="button" value="Купить" onclick="addToCart('398');" class="button" /></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="image"><a href="pgs/zdaniya-socialno-bytovogo-naznacheniya/administrativno-torgovyjj-kompleks-moskva.html"><img src="image/cache/150-150/data/PGS-b/b-29/0000.jpg" alt="Административно-торговый комплекс в г. Москва" /></a></div>
+                            <div class="name"><a href="pgs/zdaniya-socialno-bytovogo-naznacheniya/administrativno-torgovyjj-kompleks-moskva.html">Административно-торговый комплекс в г. Москва</a></div>
+                            <div class="price">
+                                <span class="price-old">5 000 р.</span> <span class="price-new">3 500 р.</span>
+                            </div>
+                            <div class="cart"><input type="button" value="Купить" onclick="addToCart('148');" class="button" /></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="image"><a href="pgs/mnogoetazhnye-zhilye-doma/5-sekcionnyjj-7-ehtazhnyjj-zhilojj-dom-sredneuralsk.html"><img src="image/cache/150-150/data/PGS-A/0059/5-sekcionnyjj-7-ehtazhnyjj-zhilojj-dom-Sredneuralsk.jpg" alt="5-секционный 7-этажный жилой дом в г.Среднеуральск" /></a></div>
+                            <div class="name"><a href="pgs/mnogoetazhnye-zhilye-doma/5-sekcionnyjj-7-ehtazhnyjj-zhilojj-dom-sredneuralsk.html">5-секционный 7-этажный жилой дом в г.Среднеуральск</a></div>
+                            <div class="price">
+                                4 500 р.                            </div>
+                            <div class="cart"><input type="button" value="Купить" onclick="addToCart('336');" class="button" /></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="image"><a href="pgs/promyshlennye-zdaniya/silosnyjj-korpus-dlja-sypuchikh-materialov-vmestimostju-18000t-rtishhevo.html"><img src="image/cache/150-150/data/PGS-V/00041/Silosnyjj-korpus-dlja-sypuchikh-materialov.jpg" alt="Силосный корпус для сыпучих материалов вместимостью 18000т в г.Ртищево" /></a></div>
+                            <div class="name"><a href="pgs/promyshlennye-zdaniya/silosnyjj-korpus-dlja-sypuchikh-materialov-vmestimostju-18000t-rtishhevo.html">Силосный корпус для сыпучих материалов вместимостью 18000т в г.Ртищево</a></div>
+                            <div class="price">
+                                <span class="price-old">4 000 р.</span> <span class="price-new">2 000 р.</span>
+                            </div>
+                            <div class="cart"><input type="button" value="Купить" onclick="addToCart('375');" class="button" /></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <script type="text/javascript"><!--
+        $('#carousel0 ul').jcarousel({
+            vertical: false,
+            visible: 6,
+            scroll: 1,
+            visible: 5,
+            circular: true,
+            auto: 2,
+            wrap: 'last',
+        });
+        //--></script>
+
+        <div class="welcome"></div>
+        <h2>
+            Почему такие низкие цены?</h2>
+        <p>
+            Дипломные проекты по строительству представленные на нашем сайте уже готовы! Мы не тратим сил и время на их разработку. Работы выполнялись и защищались студентами, однако беспокоиться по этому поводу не стоит, ведь дипломные руководители и преподаватели проверяют каждый раздел и вносят коррективы и исправления, тем самым вы получаете за небольшую сумму проект хорошего качества!</p>
+        <h2>
+            Помощь в подборе темы</h2>
+        <p>
+            На нашем сайте содержится более 800 дипломов по строительству. Если вы не можете подобрать себе проект, либо у вас на это нет времени, пишите нам и мы обязательно вам поможем подобрать проект под ваши требования!</p>
+        <h2>
+            Скидки!</h2>
+        <ul>
+            <li>
+                При покупке второй и последующих проектов предоставляется 10% скидка!</li>
+            <li>
+                При единовременной покупке от 3-х проектов скидка 15%</li>
+            <li>
+                При покупке 5-ти работ 6-ая в подарок!</li>
+            <li>
+                При двойной оплате мы уберем проект с сайта!</li>
+        </ul>
+        <h2>
+            Со мной свяжутся после оформления заказа?</h2>
+        <p>
+            После оформления заказа на указанный вами емейл мы отправляем письмо с информацией о выбранном проекте, о способах оплаты и гарантиях!</p>
+        <h2>
+            Как получить работу, куда и в каком виде она придет?</h2>
+        <p>
+            Работы мы высылаем на электронную почту, сразу после поступления платежа. Весь материал высылаем в электронном виде заархивированной папкой, в которую входит пояснительная записка и чертежи в Автокаде или Компасе.</p>
+        <h2>
+            Диплом для специалистов или Бакалавров, есть ли разница?</h2>
+        <p>
+            По сути дипломы идентичные, и имеют в своем составе одинаковые разделы. Разница заключается лишь в обьеме. Если у специалистов в среднем требуют 150 страниц пояснительной записки и 12 чертежей на формате А1, то у бакалавров 80-100 стр ПЗ и 6-8 чертежей. Бакалаврам мы бы советовали брать проекты специалистов. И вот почему: Удалить несколько чертежей и часть пояснительной записки дело 5 минут, а вот если вам потребуется дополнительная информация, то необходимо будет уже чертить и считать самостоятельно, либо заказывать у нас. Поэтому дополнительная информация никогда не помешает!</p>
+        <blockquote style="text-align:center">
+            Купить дипломные работы и проекты по строительству вы можете в нашем интернет-магазине, у нас вы найдете дипломные работы на самые разные темы проектов.</blockquote>
+        <h2>
+            Почему купить диплом по строительству лучше у нас?</h2>
+        <ol>
+            <li>
+                Проекты с бесплатных интернет-ресурсов скачивались уже сотни раз, и защищались практически во всех ВУЗах страны. Вполне возможно, что в вашем ВУЗе защищали именно тот проект, который скачали вы. Вам его могут утвердить, ведь руководитель диплома может и не помнить всех работ. А потом на защите вас будет ждать неприятный сюрприз, так как комиссия решит, что вы просто повторно защищаете чей-то проект. Мы же ведем строгий учет продаваемых проектов, и не допускаем повторной продажи в один и тот же ВУЗ.</li>
+            <li>
+                Бесплатно скачанные проекты часто бывают очень низкого качества, в пояснительной записке может не хватать какого-нибудь раздела, в графической части может не хватать чертежей. В итоге с бесплатно скаченным материалом придётся повозиться, а возможно, и вообще переделывать половину работы.</li>
+            <li>
+                На нашем сайте все проекты защищались на «хорошо» и «отлично», и проверены на наличие всех заявленных разделов.</li>
+            <li>
+                Выпускная работа - очень важный этап в жизни каждого студента, и это не тот случай, где нужно экономить. Ведь как говорится: скупой платит дважды!</li>
+        </ol>
+    </div>
+{% endblock %}

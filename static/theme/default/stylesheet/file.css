@@ -1,0 +1,28 @@
+/* ///3274/// */
+.files{
+	width:100%;
+	margin:10px 0px 20px 0px; 
+	padding:10px 10px 10px 10px;
+	border:1px solid #E7E7E7;
+}
+.files h3{
+	font:bold 18px Arial;
+	margin:0 0 5px 0;
+}
+.file-items{
+	margin:0 0 5px 0;
+}
+.file-items .file-item{
+	margin-bottom:10px;
+}
+.file-items .file-item span{
+	display:inline-block;
+	vertical-align:top;
+	height:50px;
+	margin-right:10px;
+}
+.file-items .file-item span a{
+	font:14px/50px Arial;
+	vertical-align:top;
+	display:inline-block;
+}

@@ -1,0 +1,79 @@
+{% load static %}
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="ru" xml:lang="ru">
+
+<!-- Mirrored from st-diplom.ru/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 15 Dec 2019 11:46:12 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<title>Готовые дипломные работы, проекты по строительству на заказ</title>
+
+<meta name="description" content="Купить готовые дипломные работы и проекты по строительству вы можете в нашем интернет-магазине, у нас вы найдете дипломные работы на самые разные темы проектов." />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="{% static 'image/data/icon.png' %}" rel="icon" />
+<link rel="stylesheet" type="text/css" href="{% static 'theme/Diplom/stylesheet/stylesheet.css'%}" />
+<link rel="stylesheet" type="text/css" href="{% static 'theme/Diplom/stylesheet/homepagecategorywall.css'%}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{% static 'theme/Diplom/stylesheet/carousel.css'%}" media="screen" />
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="{% static ''%}theme/Diplom/stylesheet/ie.css" />
+<![endif]-->
+<link rel='stylesheet' media='(max-width: 1024px)' href='{% static 'theme/Diplom/stylesheet/mobile.css'%}' />
+<script type="text/javascript" src="{% static 'javascript/jquery/jquery-1.7.1.min.js'%}"></script>
+<script type="text/javascript" src="{% static 'javascript/jquery/ui/jquery-ui-1.8.16.custom.min.js'%}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'javascript/jquery/ui/themes/ui-lightness/jquery-ui-1.8.16.custom.css'%}" />
+<script type="text/javascript" src="{% static 'javascript/jquery/ui/external/jquery.cookie.js'%}"></script>
+<link rel="stylesheet" href="{% static 'javascript/ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css'%}">
+<script src="{% static 'javascript/ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js'%}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'javascript/jquery/colorbox/colorbox.css'%}" media="screen" />
+<script type="text/javascript" src="{% static 'javascript/jquery/tabs.js'%}"></script>
+<script type="text/javascript" src="{% static 'javascript/common.js'%}"></script>
+<script type="text/javascript" src="{% static 'javascript/scrolltopcontrol/scrolltopcontrol.js'%}"></script>
+<!---<script type="text/javascript" src="http://consultsystems.ru/script/5536/" charset="utf-8"> </script>--->
+<script type="text/javascript" src="{% static 'javascript/jquery/jquery.jcarousel.min.js'%}"></script>
+<!--[if IE 7]>
+<link rel="stylesheet" type="text/css" href="theme/Diplom/stylesheet/ie7.css" />
+<![endif]-->
+<!--[if lt IE 7]>
+<link rel="stylesheet" type="text/css" href="theme/Diplom/stylesheet/ie6.css" />
+<script type="text/javascript" src="javascript/DD_belatedPNG_0.0.8a-min.js"></script>
+<script type="text/javascript">
+DD_belatedPNG.fix('#logo img');
+</script>
+<![endif]-->
+
+<script language="JavaScript" type="text/javascript">
+function highlight(){
+  var tags=document.getElementsByTagName("li");
+  for(i in tags){
+    if(tags[i].className=="nav"){
+        if(document.location.href==tags[i].firstChild.href){
+            tags[i].className += " active";
+        }
+    }
+  }
+}
+</script>
+<script>
+    function dropdown() {
+        document.getElementById("mobail_menu").classList.toggle("show");
+    }
+    window.onclick = function(e) {
+        if (!e.target.matches('.dropbtn')) {
+            var myDropdown = document.getElementById("mobail_menu");
+            if (myDropdown.classList.contains('show')) {
+                myDropdown.classList.remove('show');
+            }
+        }
+    }
+</script>
+
+</head>
+<body>
+<div id="container">
+{% include 'header.html' %}
+{% block content %}
+{%  endblock %}
+{% include 'footer.html' %}
+</div>
+</body>
