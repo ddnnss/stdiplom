@@ -1,0 +1,36 @@
+<div style="display: flex;padding: 10px 0; flex-wrap: wrap; justify-content: space-between">
+
+         <div  class="image">
+        <a href="{% url 'item' item.category.name_slug item.name_slug %}">
+            <img style="width: 200px" src="{{ item.image.url }}" title="{{ item.name }}" alt="{{ item.name }}" />
+        </a>
+    </div>
+
+
+   <div style="flex-basis: 55%">
+       <div class="name">
+        <a href="{% url 'item' item.category.name_slug item.name_slug %}">{{ item.name }}</a>
+    </div>
+      <div class="description">
+
+     {{ item.description_main  |safe | escape }}
+    </div>
+
+   </div>
+    <div style="display: flex; flex-direction: column; justify-content: space-between">
+          <div class="price">
+        {{ item.price }} р.
+    </div>
+
+         <div class="cart">
+
+        <a href="{% url 'item' item.category.name_slug item.name_slug %}" class="button-big">Подробнее</a>
+    </div>
+    </div>
+
+
+
+
+
+
+</div>

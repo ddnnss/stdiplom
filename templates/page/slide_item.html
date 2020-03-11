@@ -1,0 +1,14 @@
+ <li>
+                        <div>
+                            <div class="image"><a href="{% url 'item' item.category.name_slug item.name_slug %}">
+                                <img style="width: 150px" src="{{ item.image.url }}" alt="{{ item.name }}" />
+                            </a></div>
+                            <div class="name"><a href="{% url 'item' item.category.name_slug item.name_slug %}">16-этажный жилой дом с офисными помещениями в г.Пермь</a></div>
+                            <div class="price">
+                                <!--span class="price-old">5 000 р.</span--> <span class="price-new">{{ item.price }} р.</span>
+                            </div>
+                            <div class="cart">
+                                <a href="{% url 'add2cart' item.id %}" class="button">В корзину</a>
+                            </div>
+                        </div>
+                    </li>

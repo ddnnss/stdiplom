@@ -1,0 +1,74 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+    <div id="content">
+        <div class="top">
+            <div class="left"></div>
+            <div class="right"></div>
+            <div class="center">
+                <h1>Отзывы покупателей</h1>
+            </div>
+        </div>
+        <div class="middle">
+
+
+            <table class="content" width="100%" border="0">
+                <tbody>
+                <tr>
+                    <td valign="top" style="text-align:left;" colspan="2"><b>Диплом хороший</b></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:left;">
+                        <p>
+                            Без обмана 100%!!! Выслали всё в полном объеме, проект, графика, ПЗ очень содержательные . Работы прошли проверку на плагин. Реком ендовал обратиться к Вам и своих сокурсников!</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="font-size: 0.9em; text-align: right;">
+                        Рейтинг:<br>
+                        <img src="{% static 'theme/default/image/testimonials/stars-5.png' %}" style="margin-top: 2px;">
+                        <br>
+                        -&nbsp;<i>Сергей Александрович Сегриев-Посад</i> <!--.' '.$testimonial['date_added']; - дата отзыва --->
+                    </td>
+
+                </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+        <h2>Оставьте свой отзыв</h2>
+        <form action="#">
+
+            <b>Ваше имя:</b><br />
+            <input type="text" required name="name" value="" />
+            <br /><br />
+            <b>Ваш E-Mail:</b><br />
+            <input type="text" required name="email" value="" />
+            <br /><br />
+            <b>Тема отзыва:</b><br />
+            <input type="text" required name="subject" value="" />
+            <br /><br />
+            <b>Ваша оценка:</b><br /><br />
+                <select name="stars" required>
+                    <option selected value="5">5</option>
+                    <option  value="4">4</option>
+                    <option  value="3">3</option>
+                    <option  value="2">2</option>
+                    <option  value="1">1</option>
+                </select>
+                <br /><br />
+                <b>Сообщение:</b><br />
+                <textarea name="message" required cols="40" rows="10" style="width: 99%;"></textarea>
+                <br />
+
+                <br />
+
+                <button type="submit" >Отправить</button>
+
+        </form>
+
+
+    </div>
+{% endblock %}

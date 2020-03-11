@@ -1,0 +1,111 @@
+<div id="column-left">
+
+    <div class="category-n"><div class="box">
+        <div class="box-heading">Категории</div>
+
+        <div class="box-content">
+            <div class="box-category hide">
+                <ul>
+
+                    {% for catt in allCategories %}
+
+                        <li>
+                            <a {% if catt.name_slug == cat.name_slug %}class="active" {% endif %} href="{% url 'category' catt.name_slug %}">{{ catt.name }}</a>
+
+                            <ul>
+
+                                {% for subcat in allSubCat %}
+
+                                    {% if subcat.subcat_id == catt.id %}
+                                        <li>
+
+                                            &nbsp;<a href="{% url 'subcategory'  catt.name_slug subcat.name_slug %}">{{ subcat.name }}</a>
+
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div></div>
+    <div class="boxMobile">
+        <div class="box-heading" style="margin-bottom: 10px;"><button onclick="leftMobile('LeftMobile')" class="w3-button w3-block w3-left-align"  style="width: 100%;color:#FFF;background-color: #3ab9e8;padding: 8px 16px;border: none;margin-bottom: 1;">Категории<div style="float: right;">▼</div></button></div>
+
+        <div class="box-content w3-hide w3-container" id="LeftMobile">
+            <div class="box-category hide">
+                <ul>
+                    <li>
+                        <a href="index.html" class="active">Промышленное и гражданское строительство</a>
+                        <ul>
+                            <li>
+                                <a href="zdaniya-socialno-bytovogo-naznacheniya/index.html"> - Общественные здания</a>
+                            </li>
+                            <li>
+                                <a href="mnogoetazhnye-zhilye-doma/index.html"> - Многоэтажные жилые дома</a>
+                            </li>
+                            <li>
+                                <a href="promyshlennye-zdaniya/index.html"> - Промышленные здания</a>
+                            </li>
+                            <li>
+                                <a href="kotedzhi-i-dachi/index.html"> - Коттеджи и таунхаусы</a>
+                            </li>
+                            <li>
+                                <a href="technologicheskie_karty/index.html"> - Технологические карты</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="../eun/index.html">Экспертиза и управление недвижимостью</a>
+                    </li>
+                    <li>
+                        <a href="../gsh/index.html">Городское строительство и хозяйство</a>
+                    </li>
+                    <li>
+                        <a href="../arhitektura/index.html">Архитектура</a>
+                    </li>
+                    <li>
+                        <a href="../technologiya-mashinostroeniya/index.html">Технология машиностроения</a>
+                    </li>
+                    <li>
+                        <a href="../teplogazosnabzhenie-i-ventilyaciya/index.html">Теплогазоснабжение и вентиляция</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function leftMobile(id) {
+            var x = document.getElementById(id);
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-red";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-red", "");
+            }
+        }
+    </script>    <div id="block_zakaz">
+    <p>
+        <a href="../contact-us/index.html">Уникальная база проектов,<br />
+            не выложенных на сайт. Спрашивайте на<br />
+            <ins><strong>st-diplom@mail.ru</strong></ins></a></p>
+</div>
+    <div id="block_pgs">
+        <p>
+            <a href="../zakaz.html">Выполнение дипломных проектов на заказ<strong>.</strong></a></p>
+    </div>
+
+
+    <!--<script type="text/javascript" src="https://vk.com/js/api/openapi.js?160"></script>
+
+    <div id="vk_groups"></div>
+    <script type="text/javascript">
+    VK.Widgets.Group("vk_groups", {mode: 3}, 42242358);
+    </script>-->
+</div>

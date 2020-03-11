@@ -3,8 +3,8 @@ from .models import *
 
 class ItemsInline (admin.TabularInline):
     model = ItemsInOrder
-    fields = ('image_tag', 'name_tag', 'article_tag', 'number', 'total_price',)
-    readonly_fields = ('image_tag', 'name_tag', 'article_tag', 'number', 'total_price',)
+    fields = ('image_tag', 'name_tag',  'number', 'total_price',)
+    readonly_fields = ('image_tag', 'name_tag', 'number', 'total_price',)
     #list_display = ['id', 'discount']
     extra = 0
     #
@@ -19,7 +19,7 @@ class OrdersAdmin(admin.ModelAdmin):
     list_filter = ('is_complete',)
     inlines = [ItemsInline]
 
-    readonly_fields = ('order_code', 'promo_code', 'total_price', 'total_price_with_code', 'created_tag')
+    readonly_fields = ('order_code', 'total_price', 'created_tag')
     #include = ['created_at']
     # exclude = ['info'] #не отображать на сранице редактирования
     class Meta:
@@ -29,7 +29,5 @@ class OrdersAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Order, OrdersAdmin)
-admin.site.register(OrderStatus)
-admin.site.register(OrderShipping)
-admin.site.register(OrderPayment)
+
 admin.site.register(ItemsInOrder)

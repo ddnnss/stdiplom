@@ -21,18 +21,27 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('category/<cat_slug>/', views.category, name='category'),
-    path('subcategory/<subcat_slug>/', views.subcategory, name='subcategory'),
+    path('category/<cat_slug>/<subcat_slug>/', views.subcategory, name='subcategory'),
+    path('category/<cat_slug>/<item_slug>', views.item, name='item'),
+    # path('subcategory/<subcat_slug>/', views.subcategory, name='subcategory'),
     path('collection/<collection_slug>/', views.collection, name='collection'),
     path('search/', views.search, name='search'),
     path('about_us/', views.about_us, name='about_us'),
-    path('contacts/', views.contacts, name='contacts'),
+
     path('dostavka/', views.dostavka, name='dostavka'),
     path('new/', views.new, name='new'),
-    path('checkout/', views.checkout, name='checkout'),
+
     path('check_email/', views.check_email, name='check_email'),
     path('order/<order_code>', views.order, name='order'),
     path('robots.txt', views.robots, name='robots'),
-    path('sitemap.xml', views.sitemap, name='sitemap')
+    path('sitemap.xml', views.sitemap, name='sitemap'),
+    path('usloviya-pokupki/', views.usloviyapokupki, name='usloviyapokupki'),
+    path('nashi-garantii/', views.nashigarantii, name='nashigarantii'),
+    path('add2cart/<id>', views.add2cart, name='add2cart'),
+    path('del4cart/<id>', views.del4cart, name='del4cart'),
+    path('contacts/', views.contacts, name='contacts'),
+    path('reviews/', views.reviews, name='reviews'),
+    path('checkout/', views.checkout, name='checkout'),
 
     # path('login/', views.login, name='login'),
     # path('logout/', views.logout_page, name='logout'),

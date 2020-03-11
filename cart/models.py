@@ -17,7 +17,7 @@ class Cart(models.Model):
 
     def __str__(self):
         if self.client:
-            return 'Товар в корзине клиента : %s ' % self.client.name
+            return 'Товар в корзине клиента : %s ' % self.client
         elif self.guest:
             return 'Товар в корзине гостя : %s ' % self.guest.id
         else:

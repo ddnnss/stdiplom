@@ -1,0 +1,114 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block content %}
+    <div id="content">    <div class="breadcrumb">
+        <a href="/">Главная</a>
+        » <a href="#">Оформление заказа</a>
+    </div>
+        <h1>Оформление заказа</h1>
+        <div class="simple-content">
+            <div class="simplecheckout" id="simplecheckout_form">
+                <!-- simplecheckout form -->
+                <div class="simplecheckout-block" id="simplecheckout_cart">
+                    <table class="simplecheckout-cart">
+                        <thead>
+                        <tr>
+                            <th class="image">Фото</th>
+                            <th class="name">Наименование товара</th>
+                            <th class="model">Модель</th>
+                            <th class="quantity"><span title="Количество">Кол-во</span></th>
+                            <th class="price">Цена</th>
+                            <th class="total">Итого</th>
+                            <th class="remove"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for cart_item in all_items_in_cart %}
+                            <tr>
+                                <td class="image">
+                                    <a href="#">
+                                        <img style="width: 150px" src="{{ cart_item.item.image.url }}" alt="{{ cart_item.item.name }}" title="{{ cart_item.item.name }}"></a>
+                                </td>
+                                <td class="name">
+                                    <div class="image">
+                                        <a href="#">
+                                            <img src="{{ cart_item.item.image.url }}" alt="{{ cart_item.item.name }}" title="{{ cart_item.item.name }}"></a>
+                                    </div>
+                                    <a href="#">{{ cart_item.item.name }}</a>
+                                    <div class="options">
+                                    </div>
+                                </td>
+                                <td class="model">{{ cart_item.item.sku }}</td>
+                                <td class="quantity">
+                                    {{ cart_item.number }}
+                                </td>
+                                <td class="price"><nobr>{{ cart_item.item.price }} р.</nobr></td>
+                                <td class="total"><nobr>{{ cart_item.total_price }} р.</nobr></td>
+                                <td class="remove">
+                                <td class="remove"><a href="{% url 'del4cart' cart_item.item.id %}">X</a></td></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+
+                    <div class="simplecheckout-cart-total" id="total_total">
+                        <span><b>Итого:</b></span>
+                        <span class="simplecheckout-cart-total-value"><nobr>{{ total_cart_price }} р.</nobr></span>
+
+                    </div>
+
+                    <input type="hidden" name="remove" value="" id="simplecheckout_remove">
+
+                </div><div class="simplecheckout-block" id="simplecheckout_customer"><div class="simplecheckout-block-heading">
+                Покупатель    </div>
+                <div class="simplecheckout-block-content">
+                    <input type="hidden" name="checkout_customer[address_id]" id="customer_address_id" value="0">
+                    <div class="simplecheckout-customer-block">
+                        <form action="{% url 'checkout' %}" method="post">{% csrf_token %}
+                                   <table class="simplecheckout-customer-two-column-left">
+                            <tbody><tr>
+                                <td class="simplecheckout-customer-left">
+                                    <span class="simplecheckout-required">*</span>
+                                    E-mail                            </td>
+                                <td class="simplecheckout-customer-right">
+                                    <input type="text" class="simplecheckout-red-border" id="checkout_customer_main_email" name="email" value="">                                                            </td>
+                            </tr>
+                            <tr class="simple_table_row ">
+                                <td class="simplecheckout-customer-left">
+                                    <span class="simplecheckout-required">*</span>
+                                    Имя                        </td>
+                                <td class="simplecheckout-customer-right">
+                                    <input type="text" class="simplecheckout-red-border" id="checkout_customer_main_firstname" name="fio" value="">                                                    </td>
+                            </tr>
+                            </tbody></table>
+                        <table class="simplecheckout-customer-two-column-right">
+                            <tbody><tr class="simple_table_row ">
+                                <td class="simplecheckout-customer-left">
+                                    <span class="simplecheckout-required">*</span>
+                                    Телефон                        </td>
+                                <td class="simplecheckout-customer-right">
+                                    <input type="text" class="simplecheckout-red-border" id="checkout_customer_main_telephone" name="phone" value="">                                                    </td>
+                            </tr>
+                            <tr class="simple_table_row ">
+                                <td class="simplecheckout-customer-left">
+                                    Комментарий                        </td>
+                                <td class="simplecheckout-customer-right">
+                                    <textarea type="text" id="checkout_customer_main_comment" name="comment"></textarea>                                                    </td>
+                            </tr>
+                            </tbody></table>
+
+                                <button class="button btn" type="submit">Оформить заказ</button>
+
+                        </form>
+               </div>
+
+                <div class="simplecheckout-payment-text">Во избежание продажи одного и того же диплома в один ВУЗ, просьба указать в комментарии учебное заведение (с расшифровкой), факультет, кафедру, форму обучения (дневная, вечерняя, заочная). Вся информация, разумеется, останется строго конфиденциальной.</div></div>    <input type="hidden" name="simple_create_order" id="simple_create_order" value="">
+
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

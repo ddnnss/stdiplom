@@ -2290,3 +2290,30 @@ a.VKbuttons {
     font-size: 16px;
     font-weight: 100;
 }
+
+.pagination{
+	list-style: none;
+	display: flex;
+}
+.pagination li{
+	margin-right: 10px;
+	border: 1px solid #3ab9e8;
+	padding: 0 5px;
+}
+
+.pagination li a{
+	text-decoration: none;
+
+}
+
+.page-item.active {
+	background: #3ab9e8;
+	color: #ffffff;
+	font-weight: 600;
+}
+
+.page-item.active a{
+
+	color: #ffffff;
+
+}

@@ -4,7 +4,7 @@ from cart.models import Cart
 from customuser.models import Guest
 from item.models import PromoCode,Item,SubCategory
 from datetime import datetime
-from order.models import Wishlist
+
 
 
 def format_number(num):
@@ -17,25 +17,6 @@ def show_cart(request):
 
     return render(request, 'cart/cart.html', locals())
 
-def wishlist_delete(request):
-    return_dict = {}
-    if request.user.is_authenticated:
-        Wishlist.objects.get(id=int(request.POST.get('id'))).delete()
-
-        return_dict['result'] = True
-    else:
-        return_dict['result'] = False
-    return JsonResponse(return_dict)
-
-def wishlist_add(request):
-    return_dict = {}
-    if request.user.is_authenticated:
-        Wishlist.objects.create(client=request.user, item_id=int(request.POST.get('item_id')))
-
-        return_dict['result'] = True
-    else:
-        return_dict['result'] = False
-    return JsonResponse(return_dict)
 
 def add_to_cart(request):
     return_dict = {}

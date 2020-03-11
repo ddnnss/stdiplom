@@ -50,7 +50,7 @@ $(document).ready(function() {
 	$('#cart > .heading a').live('click', function() {
 		$('#cart').addClass('active');
 		
-		$('#cart').load('index0652.html?route=module/cart#cart > *');
+
 		
 		$('#cart').live('mouseleave', function() {
 			$(this).removeClass('active');

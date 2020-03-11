@@ -4,66 +4,15 @@ from customuser.models import User, Guest
 from item.models import Item, PromoCode
 from django.utils.safestring import mark_safe
 
-class Wishlist(models.Model):
-    client = models.ForeignKey(User, blank=True, null=True, default=None, on_delete=models.SET_NULL,
-                               verbose_name='Клиент')
-    item = models.ForeignKey(Item, blank=True, null=True, on_delete=models.SET_NULL, verbose_name='Товар')
-
-    def __str__(self):
-        return 'Закладка клиента : %s ' % self.client.email
-
-    class Meta:
-        verbose_name = "Закладка клиента"
-        verbose_name_plural = "Закладки клиентов"
-
-
-class OrderStatus(models.Model):
-    name = models.CharField('Статус для заказа', max_length=100, blank=False)
-
-    def __str__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = "Статус для заказа"
-        verbose_name_plural = "Статусы для заказов"
-
-class OrderPayment(models.Model):
-    name = models.CharField('Вариант оплаты заказа', max_length=100, blank=False)
-
-    def __str__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = "Вариант оплаты заказа"
-        verbose_name_plural = "Варианты оплаты заказов"
-
-class OrderShipping(models.Model):
-    name = models.CharField('Вариант доставки заказа', max_length=100, blank=False)
-
-    def __str__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = "Вариант доставки заказа"
-        verbose_name_plural = "Варианты доставки заказов"
 
 class Order(models.Model):
-    client = models.ForeignKey(User, blank=True, null=True, default=None, on_delete=models.CASCADE,
-                               verbose_name='Заказ клиента')
-    guest = models.ForeignKey(Guest, blank=True, null=True, default=None, on_delete=models.CASCADE,
-                              verbose_name='Заказ гостя')
-    promo_code = models.ForeignKey(PromoCode, blank=True, null=True, default=None, on_delete=models.SET_NULL,
-                              verbose_name='Использованный промо-код')
-    status = models.ForeignKey(OrderStatus, blank=True, null=True, default=None, on_delete=models.SET_NULL,
-                              verbose_name='Статус заказа')
-    payment = models.ForeignKey(OrderPayment, blank=True, null=True, default=None, on_delete=models.SET_NULL,
-                               verbose_name='Оплата заказа')
-    shipping = models.ForeignKey(OrderShipping, blank=True, null=True, default=None, on_delete=models.SET_NULL,
-                                verbose_name='Доставка заказа')
+
+    email = models.CharField('Email', max_length=100, blank=True, null=True)
+    fio = models.CharField('ФИО', max_length=100, blank=True, null=True)
+    phone = models.CharField('Телефон', max_length=100, blank=True, null=True)
+    comment = models.CharField('Комментарий', max_length=100, blank=True, null=True)
     total_price = models.IntegerField('Общая стоимость заказа', default=0)
-    total_price_with_code = models.DecimalField('Общая стоимость заказа с учетом промо-кода', decimal_places=2,
-                                                max_digits=10, default=0)
-    track_code = models.CharField('Трек код', max_length=50, blank=True, null=True)
+
     order_code = models.CharField('Код заказа', max_length=10, blank=True, null=True)
     is_complete = models.BooleanField('Заказ выполнен ?', default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -71,20 +20,8 @@ class Order(models.Model):
 
 
     def __str__(self):
-        if self.client:
-            if self.promo_code:
-                return 'Заказ № %s. Создан : %s  . Клиент: %s . Сумма заказа : %s' % (
-                self.id, self.created_at.strftime('%d-%m-%Y'), self.client.email, self.total_price_with_code)
-            else:
-                return 'Заказ № %s. Создан : %s  . Клиент: %s . Сумма заказа : %s' % (
-                self.id, self.created_at.strftime('%d-%m-%Y'), self.client.email, self.total_price)
-        if self.guest:
-            if self.promo_code:
-                return 'Заказ № %s. Создан : %s  . Гость: %s . Сумма заказа : %s' % (
-                self.id, self.created_at.strftime('%d-%m-%Y'), self.guest.email, self.total_price_with_code)
-            else:
-                return 'Заказ № %s. Создан : %s  . Гость: %s . Сумма заказа : %s' % (
-                self.id, self.created_at.strftime('%d-%m-%Y'), self.guest.email, self.total_price)
+        return f'Заказ № {self.id}. Создан : {self.created_at}. Сумма заказа : {self.total_price}'
+
 
 
     class Meta:
@@ -92,20 +29,8 @@ class Order(models.Model):
         verbose_name_plural = "Заказы"
 
     def created_tag(self):
-
         return mark_safe('<strong>{}</strong>'.format(self.created_at.strftime('%d-%m-%Y, %H:%M:%S')))
-
     created_tag.short_description = mark_safe('<strong>Дaта заказа</strong>')
-
-    def save(self, *args, **kwargs):
-        if self.promo_code:
-            self.total_price_with_code = self.total_price - (self.total_price * self.promo_code.promo_discount / 100)
-        else:
-            self.total_price_with_code = self.total_price
-
-
-        super(Order, self).save(*args, **kwargs)
-
 
 
 
@@ -155,11 +80,7 @@ class ItemsInOrder(models.Model):
         name = self.item.name
         return name
 
-    def article_tag(self):
-        name = self.item.article
-        return name
 
-    article_tag.short_description = 'Артикул'
     name_tag.short_description = 'Название товара'
     image_tag.short_description = 'Основная картинка'
 

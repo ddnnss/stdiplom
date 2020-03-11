@@ -265,7 +265,7 @@
             <div class="box-homepagecategorywall  ">
              {% for cat in allCategories %}
                 <div class="homepagecategorywall">
-                    <div class="homecat"><a href="pgs/index.html">{{ cat.name }}</a></div>
+                    <div class="homecat"><a href="{% url 'category' cat.name_slug %}">{{ cat.name }}</a></div>
 
                     <ul>
                     {% for subcat in allSubCat %}
@@ -273,7 +273,7 @@
                         {% if subcat.subcat_id == cat.id %}
                         <li>
 
-                            &nbsp;<a href="pgs/zdaniya-socialno-bytovogo-naznacheniya/index.html">{{ subcat.name }}</a>
+                            &nbsp;<a href="{% url 'subcategory'  cat.name_slug subcat.name_slug %}">{{ subcat.name }}</a>
 
                         </li>
                         {% endif %}
@@ -299,65 +299,10 @@
             <div class="box-heading">Рекомендуемые товары</div>
             <div class="box-content">
                 <ul class="jcarousel-container box-product">
-                    <li>
-                        <div>
-                            <div class="image"><a href="pgs/mnogoetazhnye-zhilye-doma/16-ehtazhnyjj-zhilojj-dom-ofisnymi-pomeshhenijami-perm.html"><img src="image/cache/150-150/data/PGS-A/00087/16-eht-zhil-dom-ofis-pomeshh-Perm.jpg" alt="16-этажный жилой дом с офисными помещениями в г.Пермь" /></a></div>
-                            <div class="name"><a href="pgs/mnogoetazhnye-zhilye-doma/16-ehtazhnyjj-zhilojj-dom-ofisnymi-pomeshhenijami-perm.html">16-этажный жилой дом с офисными помещениями в г.Пермь</a></div>
-                            <div class="price">
-                                <span class="price-old">5 000 р.</span> <span class="price-new">3 500 р.</span>
-                            </div>
-                            <div class="cart"><input type="button" value="Купить" onclick="addToCart('452');" class="button" /></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="image"><a href="pgs/34-mestnaja-gostinica-s-ofisnymi-pomeshhenijami-ivanovo.html"><img src="image/cache/150-150/data/PGS-b/00090/34-mestnaja-gostinica-ofisnymi-pomeshh.jpg" alt="34-местная гостиница с офисными помещениями в г.Иваново" /></a></div>
-                            <div class="name"><a href="pgs/34-mestnaja-gostinica-s-ofisnymi-pomeshhenijami-ivanovo.html">34-местная гостиница с офисными помещениями в г.Иваново</a></div>
-                            <div class="price">
-                                <span class="price-old">5 000 р.</span> <span class="price-new">3 990 р.</span>
-                            </div>
-                            <div class="cart"><input type="button" value="Купить" onclick="addToCart('385');" class="button" /></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="image"><a href="pgs/14-ehtazhnyjj-zhilojj-dom-so-vstroeno-pristroennymi-pomeshhenijami-ivanovo.html"><img src="image/cache/150-150/data/PGS-A/00070/14-ehtazhnyjj-zhilojj-dom-Ivanovo.jpg" alt="14-этажный жилой дом со встроено-пристроенными помещениями в г.Иваново" /></a></div>
-                            <div class="name"><a href="pgs/14-ehtazhnyjj-zhilojj-dom-so-vstroeno-pristroennymi-pomeshhenijami-ivanovo.html">14-этажный жилой дом со встроено-пристроенными помещениями в г.Иваново</a></div>
-                            <div class="price">
-                                <span class="price-old">4 000 р.</span> <span class="price-new">2 990 р.</span>
-                            </div>
-                            <div class="cart"><input type="button" value="Купить" onclick="addToCart('398');" class="button" /></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="image"><a href="pgs/zdaniya-socialno-bytovogo-naznacheniya/administrativno-torgovyjj-kompleks-moskva.html"><img src="image/cache/150-150/data/PGS-b/b-29/0000.jpg" alt="Административно-торговый комплекс в г. Москва" /></a></div>
-                            <div class="name"><a href="pgs/zdaniya-socialno-bytovogo-naznacheniya/administrativno-torgovyjj-kompleks-moskva.html">Административно-торговый комплекс в г. Москва</a></div>
-                            <div class="price">
-                                <span class="price-old">5 000 р.</span> <span class="price-new">3 500 р.</span>
-                            </div>
-                            <div class="cart"><input type="button" value="Купить" onclick="addToCart('148');" class="button" /></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="image"><a href="pgs/mnogoetazhnye-zhilye-doma/5-sekcionnyjj-7-ehtazhnyjj-zhilojj-dom-sredneuralsk.html"><img src="image/cache/150-150/data/PGS-A/0059/5-sekcionnyjj-7-ehtazhnyjj-zhilojj-dom-Sredneuralsk.jpg" alt="5-секционный 7-этажный жилой дом в г.Среднеуральск" /></a></div>
-                            <div class="name"><a href="pgs/mnogoetazhnye-zhilye-doma/5-sekcionnyjj-7-ehtazhnyjj-zhilojj-dom-sredneuralsk.html">5-секционный 7-этажный жилой дом в г.Среднеуральск</a></div>
-                            <div class="price">
-                                4 500 р.                            </div>
-                            <div class="cart"><input type="button" value="Купить" onclick="addToCart('336');" class="button" /></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="image"><a href="pgs/promyshlennye-zdaniya/silosnyjj-korpus-dlja-sypuchikh-materialov-vmestimostju-18000t-rtishhevo.html"><img src="image/cache/150-150/data/PGS-V/00041/Silosnyjj-korpus-dlja-sypuchikh-materialov.jpg" alt="Силосный корпус для сыпучих материалов вместимостью 18000т в г.Ртищево" /></a></div>
-                            <div class="name"><a href="pgs/promyshlennye-zdaniya/silosnyjj-korpus-dlja-sypuchikh-materialov-vmestimostju-18000t-rtishhevo.html">Силосный корпус для сыпучих материалов вместимостью 18000т в г.Ртищево</a></div>
-                            <div class="price">
-                                <span class="price-old">4 000 р.</span> <span class="price-new">2 000 р.</span>
-                            </div>
-                            <div class="cart"><input type="button" value="Купить" onclick="addToCart('375');" class="button" /></div>
-                        </div>
-                    </li>
+                    {% for item in recomended %}
+                   {% include 'page/slide_item.html' %}
+                    {% endfor %}
+
                 </ul>
             </div>
         </div>

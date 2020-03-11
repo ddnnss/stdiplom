@@ -91,15 +91,69 @@ def robots(request):
 def sitemap(request):
     return render(request, 'page/sitemap.xml', content_type = "application/xhtml+xml")
 
+def usloviyapokupki(request):
 
+    title = 'Условия покупки дипломного проекта'
+    return render(request, 'page/usloviyapokupki.html', locals())
 
+def nashigarantii(request):
+    title = 'Наши гарантии при покупке дипломного проекта. возможность покупать проект по частям'
+    return render(request, 'page/nashi-garantii.html', locals())
+
+def add2cart(request,id):
+    s_key = request.session.session_key
+    if request.user.is_authenticated:
+        print('User is_authenticated')
+        addtocart, created = Cart.objects.get_or_create(client=request.user,
+                                                        item_id=id, defaults={'number': 1})
+        if not created:
+            addtocart.number += 1
+            addtocart.save(force_update=True)
+
+    else:
+        print('User is_not authenticated')
+        try:
+            guest = Guest.objects.get(session=s_key)
+            print('Guest already created')
+        except:
+            guest = None
+
+        if not guest:
+            guest = Guest.objects.create(session=s_key)
+            guest.save()
+            print('Guest created')
+
+        addtocart, created = Cart.objects.get_or_create(guest=guest,
+                                                        item_id=id, defaults={'number': 1})
+        if not created:
+            addtocart.number += 1
+            addtocart.save(force_update=True)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def del4cart(request,id):
+    s_key = request.session.session_key
+
+    if request.user.is_authenticated:
+        print('User is_authenticated')
+        Cart.objects.filter(client=request.user, item_id=id).delete()
+
+    else:
+        print('User is_not authenticated')
+
+        guest = Guest.objects.get(session=s_key)
+        Cart.objects.filter(guest=guest, item_id=id).delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def contacts(request):
     show_tags = True
-    title = 'КОНТАКТНАЯ ИНФОРМАЦИЯ'
+    title = 'Связаться с нами'
     return render(request, 'page/contacts.html', locals())
 
-
+def reviews(request):
+    show_tags = True
+    title = 'Отзывы покупателей'
+    return render(request, 'page/reviews.html', locals())
 def dostavka(request):
     show_tags = True
     title = 'ИНФОРМАЦИЯ О ДОСТАВКЕ'
@@ -192,148 +246,44 @@ def new(request):
 def checkout(request):
     show_tags = True
     if request.POST:
-        if request.POST.get('form_type') == 'user_info':
-            client = request.user
-            mail_tmp = client.is_allow_email
-            form = UpdateForm(request.POST, instance=request.user)
-            if form.is_valid():
-                form.save()
-                client.profile_ok = True
-                client.is_allow_email = mail_tmp
-                client.save(force_update=True)
+        fio = request.POST.get('fio')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        comment = request.POST.get('comment')
+        order_code = create_password()
+        order = Order.objects.create(fio=fio,email=email,phone=phone,comment=comment,order_code=order_code)
 
-                return HttpResponseRedirect('/checkout/')
-            else:
-                client = request.user
-                form = UpdateForm(instance=client)
-                return HttpResponseRedirect('/checkout/')
+        s_key = request.session.session_key
+        guest = Guest.objects.get(session=s_key)
+        all_cart_items = Cart.objects.filter(guest=guest)
+        for item in all_cart_items:
+            ItemsInOrder.objects.create(order_id=order.id, item_id=item.item.id, number=item.number,
+                                        current_price=item.item.price)
+            item.item.buys = item.item.buys + 1
+            item.item.save(force_update=True)
+        all_cart_items.delete()
 
-        if request.POST.get('form_type') == 'checkout':
-            order_code = create_password()
-            if request.user.used_promo:
-                promo_id = request.user.used_promo.id
-            else:
-                promo_id = None
-            order = Order.objects.create(client=request.user, promo_code_id=promo_id, order_code=order_code,
-                                         payment_id=int(request.POST.get('payment')),
-                                         shipping_id=int(request.POST.get('shipping')))
-            order.save(force_update=True)
-            all_cart_items = Cart.objects.filter(client_id=request.user.id)
-            for item in all_cart_items:
-                ItemsInOrder.objects.create(order_id=order.id, item_id=item.item.id, number=item.number,
-                                            current_price=item.item.price)
-                item.item.buys = item.item.buys + 1
-                item.item.save(force_update=True)
-            all_cart_items.delete()
-            request.user.used_promo = None
-            request.user.save(force_update=True)
-            new_order = Order.objects.get(id=order.id)
-            msg_html = render_to_string('email/new_order.html', {'order': new_order})
-            send_mail('Заказ успешно размещен', None, 'info@lakshmi888.ru', [request.user.email],
-                      fail_silently=False, html_message=msg_html)
-            send_mail('Новый заказ', None, 'norply@lakshmi888.ru', ['info@lakshmi888.ru'],
-                      fail_silently=False, html_message=msg_html)
-            return HttpResponseRedirect('/order/{}'.format(new_order.order_code))
-
-
-
-
-        if request.POST.get('form_type') == 'checkout_guest':
-            print(request.POST)
-            s_key = request.session.session_key
-            guest = Guest.objects.get(session=s_key)
-            name = request.POST.get('name')
-            family = request.POST.get('family')
-            otchestvo = request.POST.get('otchestvo')
-            email = request.POST.get('email')
-            phone = request.POST.get('phone')
-            country = request.POST.get('country')
-            city = request.POST.get('city')
-            post_code = request.POST.get('post_code')
-            address = request.POST.get('address')
-            shipping = int(request.POST.get('shipping'))
-            payment = int(request.POST.get('payment'))
-            with_register=request.POST.get('with_register')
-            user = None
-            order_code = create_password()
-
-
-
-
-            if guest.used_promo:
-                promo_id = guest.used_promo.id
-                print('With promo')
-            else:
-                promo_id = None
-                print('With no promo')
-
-            if request.POST.get('with_register') == 'on':
-                print('With register')
-                password = create_password()
-                user = User.objects.create_user(email=email, name=name, family=family, otchestvo=otchestvo, country=country,
-                                         city=city, post_code=post_code, phone=phone, address=address, profile_ok=True,
-                                         password=password)
-                msg_html = render_to_string('email/register.html', {'login': email, 'password': password})
-                send_mail('Регистрация на сайте LAKSHMI888', None, 'info@lakshmi888.ru', [email],
-                          fail_silently=False, html_message=msg_html)
-            else:
-                guest.email = email
-                guest.name = name
-                guest.family = family
-                guest.otchestvo = otchestvo
-                guest.country = country
-                guest.city = city
-                guest.post_code = post_code
-                guest.phone = phone
-                guest.address = address
-                guest.save(force_update=True)
-
-            if user:
-                order = Order.objects.create(client=user, promo_code_id=promo_id, order_code=order_code,
-                                         payment_id=int(request.POST.get('payment')),
-                                         shipping_id=int(request.POST.get('shipping')))
-            else:
-                order = Order.objects.create(guest=guest, promo_code_id=promo_id, order_code=order_code,
-                                             payment_id=int(request.POST.get('payment')),
-                                             shipping_id=int(request.POST.get('shipping')))
-            order.save(force_update=True)
-            all_cart_items = Cart.objects.filter(guest_id=guest.id)
-            for item in all_cart_items:
-                ItemsInOrder.objects.create(order_id=order.id, item_id=item.item.id, number=item.number,
-                                            current_price=item.item.price)
-                item.item.buys = item.item.buys + 1
-                item.item.save(force_update=True)
-            all_cart_items.delete()
-            guest.used_promo = None
-            guest.save(force_update=True)
-            new_order = Order.objects.get(id=order.id)
-            msg_html = render_to_string('email/new_order.html', {'order': new_order})
-            send_mail('Заказ успешно размещен', None, 'info@lakshmi888.ru', [email],
-                      fail_silently=False, html_message=msg_html)
-            send_mail('Новый заказ', None, 'norply@lakshmi888.ru', ['info@lakshmi888.ru'],
-                      fail_silently=False, html_message=msg_html)
-            print('Email sent')
-            return HttpResponseRedirect('/order/{}'.format(new_order.order_code))
+        new_order = Order.objects.get(id=order.id)
+        # msg_html = render_to_string('email/new_order.html', {'order': new_order})
+        # send_mail('Заказ успешно размещен', None, 'info@lakshmi888.ru', [email],
+        #           fail_silently=False, html_message=msg_html)
+        # send_mail('Новый заказ', None, 'norply@lakshmi888.ru', ['info@lakshmi888.ru'],
+        #           fail_silently=False, html_message=msg_html)
+        print('Email sent')
+        return HttpResponseRedirect('/order/{}'.format(new_order.order_code))
 
 
 #-------------------------------------------------------------------------------GET request
-    shipping = OrderShipping.objects.all()
-    payment = OrderPayment.objects.all()
 
-    if request.user.is_authenticated:
-        client = request.user
-        form = UpdateForm(instance=client)
-        return render(request, 'page/checkout.html', locals())
-    else:
-        form = UpdateForm()
-        return render(request, 'page/checkout.html', locals())
+    return render(request, 'page/checkout.html', locals())
 
 
 
 
 def index(request):
-    allCategories = Category.objects.filter(isActive = True, isMain = True)
-    allSubCat = Category.objects.filter(isActive = True, isMain = False)
+    allCategories = Category.objects.filter(isActive = True, isMain = True).order_by('-id')
+    allSubCat = Category.objects.filter(isActive = True, isMain = False).order_by('-id')
+    recomended = Item.objects.all().order_by('-views')[:10]
 
     for i in allSubCat:
         print(i)
@@ -349,31 +299,70 @@ def index(request):
     return render(request, 'page/index.html', locals())
 
 
+# def category(request, cat_slug):
+#     try:
+#         cat = Category.objects.get(name_slug=cat_slug)
+#         # cat.views += 1
+#         # cat.save()
+#         title = cat.page_title
+#         description = cat.page_description
+#         keywords = cat.page_keywords
+#         subcats = SubCategory.objects.filter(category=cat)
+#     except:
+#         raise Http404
+#         # return render(request, '404.html', locals())
+#     show_tags = True
+#
+#     return render(request, 'page/category.html', locals())
+
+def item(request, cat_slug, item_slug):
+    allCategories = Category.objects.filter(isActive=True, isMain=True).order_by('-id')
+    allSubCat = Category.objects.filter(isActive=True, isMain=False).order_by('-id')
+    item = Item.objects.get(name_slug=item_slug)
+    name = item.name.split(' ')
+    print(name)
+    simlar = Item.objects.filter(name__contains=name[0])
+    other = Item.objects.filter(category__name_slug=cat_slug)[:5]
+    item.views += 1
+    item.save()
+    return render(request, 'page/item.html', locals())
+
 def category(request, cat_slug):
+    # it = Item.objects.all()
+    # for i in it:
+    #     i.description = i.description.replace('<p>&nbsp;</p>', '').replace('<p>&amp;</p>', '')
+    #     i.description_main = i.description_main.replace('<p>&nbsp;</p>', '').replace('<p>&amp;</p>', '')
+    #     try:
+    #         i.description_demo = i.description_demo.replace('<p>&nbsp;</p>', '').replace('<p>&amp;</p>', '')
+    #     except:
+    #         pass
+    #
+    #     try:
+    #         i.chertezh_list = i.chertezh_list.replace('<p>&nbsp;</p>', '').replace('<p>&amp;</p>', '')
+    #     except:
+    #         pass
+    #
+    #     i.save()
+    #     print(i.id)
+    # it = Category.objects.all()
+    # for i in it:
+    #     try:
+    #         i.description = i.description.replace('&lt;!--noindex--&gt;', '').replace('&lt;!--/noindex--&gt;', '').replace(
+    #             '&lt;', '<').replace('&gt;', '>')
+    #         i.save()
+    #     except:
+    #         pass
+
     try:
+
         cat = Category.objects.get(name_slug=cat_slug)
-        # cat.views += 1
-        # cat.save()
+        all_items = Item.objects.filter(category=cat, is_active=True).order_by('-created_at')
+        allCategories = Category.objects.filter(isActive=True, isMain=True).order_by('-id')
+        allSubCat = Category.objects.filter(isActive=True, isMain=False).order_by('-id')
+        print(all_items)
         title = cat.page_title
         description = cat.page_description
         keywords = cat.page_keywords
-        subcats = SubCategory.objects.filter(category=cat)
-    except:
-        raise Http404
-        # return render(request, '404.html', locals())
-    show_tags = True
-
-    return render(request, 'page/category.html', locals())
-
-
-def subcategory(request, subcat_slug):
-    try:
-        subcat = SubCategory.objects.get(name_slug=subcat_slug)
-        all_items = Item.objects.filter(subcategory_id=subcat.id, is_active=True, is_present=True).order_by('-created_at')
-        np_all_items = Item.objects.filter(subcategory_id=subcat.id, is_active=True, is_present=False)
-        title = subcat.page_title
-        description = subcat.page_description
-        keywords = subcat.page_keywords
     except:
         raise Http404
         # return render(request, '404.html', locals())
@@ -390,28 +379,28 @@ def subcategory(request, subcat_slug):
     np_filter_sq = None
     if search:
         items = all_items.filter(name_lower__contains=search.lower())
-        not_present = np_all_items.filter(name_lower__contains=search.lower())
+
 
         if not items:
             items = all_items.filter(article__contains=search)
-            not_present = np_all_items.filter(article__contains=search)
+
         search_qs = items
-        np_search_qs = not_present
+
         param_search = search
 
     if filter == 'new':
         print('Поиск по фильтру туц')
         if search_qs:
             items = search_qs.filter(is_new=True)
-            not_present = np_search_qs.filter(is_new=True)
+
             filter_sq = items
-            np_filter_sq = not_present
+
             param_filter = filter
         else:
             items = all_items.filter(is_new=True)
-            not_present = np_all_items.filter(is_new=True)
+
             filter_sq = items
-            np_filter_sq = not_present
+
             param_filter = filter
 
         param_filter = 'new'
@@ -421,17 +410,15 @@ def subcategory(request, subcat_slug):
 
         if search_qs:
             items = search_qs.filter(filter__name_slug=filter)
-            not_present = np_search_qs.filter(filter__name_slug=filter)
+
             filter_sq = items
-            np_filter_sq = not_present
+
             param_filter = filter
         else:
             items = all_items.filter(filter__name_slug=filter)
-            not_present = np_all_items.filter(filter__name_slug=filter)
-            currentFilter = Filter.objects.get(name_slug=filter)
-            seoText = currentFilter.seoText
+
             filter_sq = items
-            np_filter_sq = not_present
+
             param_filter = filter
 
     if order:
@@ -447,7 +434,138 @@ def subcategory(request, subcat_slug):
 
     if not search and not order and not filter:
         items = all_items
-        not_present = np_all_items
+
+        # subcat.views = subcat.views + 1
+        # subcat.save()
+        param_order = '-created_at'
+
+    if count:
+        items_paginator = Paginator(items, int(count))
+        param_count = count
+    else:
+        items_paginator = Paginator(items, 15)
+
+
+
+    try:
+        items = items_paginator.get_page(page)
+        show_tags = False
+    except PageNotAnInteger:
+        items = items_paginator.page(1)
+    except EmptyPage:
+        items = items_paginator.page(items_paginator.num_pages)
+
+    return render(request, 'page/category.html', locals())
+
+def subcategory(request, cat_slug,subcat_slug):
+    # it = Item.objects.all()
+    # for i in it:
+    #     i.description = i.description.replace('<p>&nbsp;</p>', '').replace('<p>&amp;</p>', '')
+    #     i.description_main = i.description_main.replace('<p>&nbsp;</p>', '').replace('<p>&amp;</p>', '')
+    #     try:
+    #         i.description_demo = i.description_demo.replace('<p>&nbsp;</p>', '').replace('<p>&amp;</p>', '')
+    #     except:
+    #         pass
+    #
+    #     try:
+    #         i.chertezh_list = i.chertezh_list.replace('<p>&nbsp;</p>', '').replace('<p>&amp;</p>', '')
+    #     except:
+    #         pass
+    #
+    #     i.save()
+    #     print(i.id)
+    # it = Category.objects.all()
+    # for i in it:
+    #     try:
+    #         i.description = i.description.replace('&lt;!--noindex--&gt;', '').replace('&lt;!--/noindex--&gt;', '').replace(
+    #             '&lt;', '<').replace('&gt;', '>')
+    #         i.save()
+    #     except:
+    #         pass
+
+    try:
+
+        cat = Category.objects.get(name_slug=subcat_slug)
+        all_items = Item.objects.filter(category=cat, is_active=True).order_by('-created_at')
+        print(all_items)
+        allCategories = Category.objects.filter(isActive=True, isMain=True).order_by('-id')
+        allSubCat = Category.objects.filter(isActive=True, isMain=False).order_by('-id')
+        print(allSubCat)
+        title = cat.page_title
+        description = cat.page_description
+        keywords = cat.page_keywords
+    except:
+        raise Http404
+        # return render(request, '404.html', locals())
+    data = request.GET
+    print(request.GET)
+    search = data.get('search')
+    filter = data.get('filter')
+    order = data.get('order')
+    count = data.get('count')
+    page = request.GET.get('page')
+    search_qs = None
+    filter_sq = None
+    np_search_qs = None
+    np_filter_sq = None
+    if search:
+        items = all_items.filter(name_lower__contains=search.lower())
+
+
+        if not items:
+            items = all_items.filter(article__contains=search)
+
+        search_qs = items
+
+        param_search = search
+
+    if filter == 'new':
+        print('Поиск по фильтру туц')
+        if search_qs:
+            items = search_qs.filter(is_new=True)
+
+            filter_sq = items
+
+            param_filter = filter
+        else:
+            items = all_items.filter(is_new=True)
+
+            filter_sq = items
+
+            param_filter = filter
+
+        param_filter = 'new'
+
+    if filter and filter != 'new':
+        print('Поиск по фильтру')
+
+        if search_qs:
+            items = search_qs.filter(filter__name_slug=filter)
+
+            filter_sq = items
+
+            param_filter = filter
+        else:
+            items = all_items.filter(filter__name_slug=filter)
+
+            filter_sq = items
+
+            param_filter = filter
+
+    if order:
+        if search_qs and filter_sq:
+            items = filter_sq.order_by(order)
+        elif filter_sq:
+            items = filter_sq.order_by(order)
+        elif search_qs:
+            items = search_qs.order_by(order)
+        else:
+            items = all_items.order_by(order)
+        param_order = order
+
+    if not search and not order and not filter:
+        items = all_items
+
         # subcat.views = subcat.views + 1
         # subcat.save()
         param_order = '-created_at'
@@ -458,8 +576,7 @@ def subcategory(request, subcat_slug):
     else:
         items_paginator = Paginator(items, 12)
 
-    if page:
-        canonical_link = 'https://www.lakshmi888.ru/subcategory/' + subcat.name_slug
+    print(items)
 
     try:
         items = items_paginator.get_page(page)
@@ -469,8 +586,7 @@ def subcategory(request, subcat_slug):
     except EmptyPage:
         items = items_paginator.page(items_paginator.num_pages)
 
-    return render(request, 'page/subcategory.html', locals())
-
+    return render(request, 'page/category.html', locals())
 
 def collection(request, collection_slug):
     try:

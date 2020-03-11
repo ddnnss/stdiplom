@@ -192,7 +192,7 @@ class PromoCode(models.Model):
     use_counts = models.IntegerField('Кол-во использований', blank=True, default=1)
     is_unlimited = models.BooleanField('Неограниченное кол-во использований', default=False)
     is_active = models.BooleanField('Активен?', default=True)
-    expiry = models.DateTimeField('Срок действия безлимитного кода', default=timezone.now())
+    expiry = models.DateTimeField('Срок действия безлимитного кода', blank=True, null=True)
 
     def __str__(self):
         if self.is_unlimited:

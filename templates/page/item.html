@@ -1,0 +1,242 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+
+    <div id="notification"></div>
+   {% include 'page/side_menu.html' %}
+
+    <div id="content">  <div class="breadcrumb">
+        <a href="/">Главная</a>
+        &raquo; <a href="{% url 'category' item.category.name_slug %}">{{ item.category.name }}</a>
+        &raquo; <a href="#">{{ item.name }}</a>
+    </div>
+        <h1>{{ item.page_h1 }}</h1>
+        <div  class="product-info">
+            <div class="left">
+                <div class="image"><a href="{{ item.image.url }}" title="{{ item.name }}" class="colorbox" rel="colorbox"><img style="width: 300px" src="{{ item.image.url }}" title="{{ item.name }}" alt="{{ item.name }}" id="image" /></a>
+                    <div style="max-width:468px;">14-ти этажный жилой дом с подземной автостоянкой в г. Белгород</div>
+                </div>
+                <div style="display: flex; flex-wrap: wrap" class="image-additional">
+                    {% for image in item.itemimage_set.all %}
+
+                        <div class="htooltip">
+                            <a href="{{ image.image.url }}" title="{{ image.image_descr }}" class="colorbox" rel="colorbox" style="text-decoration:none;"><img style="width: 75px" src="{{ image.image.url }}" title="{{ image.image_descr }}" alt="{{ image.image_descr }}" />
+                                <span>{{ image.image_descr }}</span>
+                            </a></div>
+                    {% endfor %}
+                </div>
+
+                <div class="videoproduct"></div>
+
+            </div>
+            <div class="right">
+                <div class="description">
+
+                    <div class="description-main">
+                        {{ item.description_main | safe }}
+                 </div>
+
+                </div>
+                <div class="price">Цена:{{ item.price }} р.                <br />
+                </div>
+
+
+
+
+
+                <div class="cart">
+                    <div>
+                        <a href="{{ item.file.url }}" id="button-cart" class="button2">Скачать демо</a>
+                        <a href="{% url 'add2cart' item.id %}" id="button-cart" class="button2">Купить</a>
+
+
+
+
+
+                        <!--noindex--><div style="clear:right; padding-top:12px;"><p>
+                            Скачайте DEMO-версию дипломного проекта и утвердите в своем вузе. В DEMO-версию входят чертежи (фасад, план и разрез), а также конструктивное и объемно-планировочное решение объекта. Все, что необходимо для утверждения темы проекта!</p>
+                        </div><!--/noindex-->
+                    </div>
+                </div>
+
+                <h3>Похожие проекты:</h3>
+                <div id="tab-related">
+                    <div class="box-product2">
+                        {% for item in simlar %}
+                        <div class="product">
+                            <div class="image">
+                                <a href="{% url 'item' item.category.name_slug item.name_slug %}">
+                                    <img style="width: 80px" src="{{ item.image.url }}" alt="{{ item.name }}" />
+                                </a>
+                            </div>
+                            <div class="name">
+                                <a href="{% url 'item' item.category.name_slug item.name_slug %}">{{ item.name }}</a>
+                            </div>
+                            <!--                <div class="price">
+                                                4 000 р.                  </div>
+                                    -->                <!--<a onclick="addToCart('79');" class="button">Купить</a>-->
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div id="tabs" class="htabs"><a href="#tab-description">Содержание</a>
+            <a href="#tab-chertezh">Информация о проекте</a>
+        </div>
+
+        <div id="tab-description" class="tab-content">
+            {{ item.description |safe }}
+        </div>
+        <div id="tab-chertezh" class="tab-content">
+            {{ item.chertezh_list |safe }}
+        </div>
+
+
+        <div class="box">
+            <div class="box-heading">Другие дипломы этой категории</div>
+            <div class="box-content">
+                <div class="box-product">
+                    {% for item in other %}
+                    <div>
+                        <div class="image">
+                            <a href="{% url 'item' item.category.name_slug item.name_slug %}">
+                                <img style="width: 90px" src="{{ item.image.url }}" alt="{{ item.name }}" />
+                            </a></div>
+                        <div class="name"><a href="{% url 'item' item.category.name_slug item.name_slug %}">{{ item.name }}</a>
+                        </div>
+                        <div class="price">
+                            {{ item.price }} р.			  			</div>
+                        <div class="cart">
+                             <a href="{% url 'add2cart' item.id %}" class="button">В корзину</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript"><!--
+    if(window.innerWidth <= 1024) {
+        $('.colorbox').colorbox({
+            current: '',
+            title: '',
+            overlayClose: true,
+            opacity: 0.5,
+            width: '100%'
+        });
+    } else {
+        $('.colorbox').colorbox({
+            current: '',
+            title: '',
+            overlayClose: true,
+            opacity: 0.5,
+        });
+    }
+    $("#colorbox").on("swiperight", function ( event ){
+        $.colorbox.prev();
+    });
+    $("#colorbox").on("swipeleft", function ( event ){
+        $.colorbox.next();
+    });
+    //--></script>
+    <script type="text/javascript"><!--
+    $('#button-cart').bind('click', function() {
+        $.ajax({
+            url: 'index.php?route=checkout/cart/add',
+            type: 'post',
+            data: $('.product-info input[type=\'text\'], .product-info input[type=\'hidden\'], .product-info input[type=\'radio\']:checked, .product-info input[type=\'checkbox\']:checked, .product-info select, .product-info textarea'),
+            dataType: 'json',
+            success: function(json) {
+                $('.success, .warning, .attention, information, .error').remove();
+
+                if (json['error']) {
+                    if (json['error']['option']) {
+                        for (i in json['error']['option']) {
+                            $('#option-' + i).after('<span class="error">' + json['error']['option'][i] + '</span>');
+                        }
+                    }
+                }
+
+                if (json['success']) {
+                    $('#notification').html('<div class="success" style="display: none;">' + json['success'] + '<img src="catalog/view/theme/default/image/close.png" alt="" class="close" /></div>');
+
+                    $('.success').fadeIn('slow');
+
+                    $('#cart-total').html(json['total']);
+
+                    window.location.href = '../index47cc.html?route=checkout/simplecheckout';  // Added by Best-Byte //
+                }
+            }
+        });
+    });
+    //--></script>
+    <script type="text/javascript"><!--
+    $('#review .pagination a').live('click', function() {
+        $('#review').fadeOut('slow');
+
+        $('#review').load(this.href);
+
+        $('#review').fadeIn('slow');
+
+        return false;
+    });
+
+    $('#review').load('../index8ce7.html?route=product/product/review&amp;product_id=72');
+
+    $('#button-review').bind('click', function() {
+        $.ajax({
+            url: 'index.php?route=product/product/write&product_id=72',
+            type: 'post',
+            dataType: 'json',
+            data: 'name=' + encodeURIComponent($('input[name=\'name\']').val()) + '&text=' + encodeURIComponent($('textarea[name=\'text\']').val()) + '&rating=' + encodeURIComponent($('input[name=\'rating\']:checked').val() ? $('input[name=\'rating\']:checked').val() : '') + '&captcha=' + encodeURIComponent($('input[name=\'captcha\']').val()),
+            beforeSend: function() {
+                $('.success, .warning').remove();
+                $('#button-review').attr('disabled', true);
+                $('#review-title').after('<div class="attention"><img src="catalog/view/theme/default/image/loading.gif" alt="" /> Пожалуйста, подождите!</div>');
+            },
+            complete: function() {
+                $('#button-review').attr('disabled', false);
+                $('.attention').remove();
+            },
+            success: function(data) {
+                if (data['error']) {
+                    $('#review-title').after('<div class="warning">' + data['error'] + '</div>');
+                }
+
+                if (data['success']) {
+                    $('#review-title').after('<div class="success">' + data['success'] + '</div>');
+
+                    $('input[name=\'name\']').val('');
+                    $('textarea[name=\'text\']').val('');
+                    $('input[name=\'rating\']:checked').attr('checked', '');
+                    $('input[name=\'captcha\']').val('');
+                }
+            }
+        });
+    });
+    //--></script>
+    <script type="text/javascript"><!--
+    $('#tabs a').tabs();
+    //--></script>
+    <script type="text/javascript" src="../catalog/view/javascript/jquery/ui/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript"><!--
+    if ($.browser.msie && $.browser.version == 6) {
+        $('.date, .datetime, .time').bgIframe();
+    }
+
+    $('.date').datepicker({dateFormat: 'yy-mm-dd'});
+    $('.datetime').datetimepicker({
+        dateFormat: 'yy-mm-dd',
+        timeFormat: 'h:m'
+    });
+    $('.time').timepicker({timeFormat: 'h:m'});
+    //--></script>
+
+
+{% endblock %}

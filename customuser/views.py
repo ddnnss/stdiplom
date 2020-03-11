@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from customuser.models import User
 from django.http import JsonResponse, HttpResponseRedirect
 from .forms import SignUpForm, UpdateForm
-from order.models import Wishlist,Order
+from order.models import Order
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
@@ -49,14 +49,6 @@ def account_edit(request):
         form = UpdateForm(instance=client)
         return render(request, 'customuser/account_edit.html', locals())
 
-
-def wishlist(request):
-    if request.user.is_authenticated:
-        wish_list = Wishlist.objects.filter(client=request.user)
-
-        return render(request, 'customuser/wishlist.html', locals())
-    else:
-        return HttpResponseRedirect('/')
 
 
 def restore(request):
