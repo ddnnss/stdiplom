@@ -17,7 +17,7 @@ def items_in_cart(request):
         total_cart_price = 0
         for item in all_items_in_cart:
             total_cart_price += item.total_price
-        print(total_cart_price)
+
         total_cart_price_with_discount = total_cart_price
         if used_promo:
             print('auth user with promo')
@@ -44,7 +44,7 @@ def items_in_cart(request):
             for item in all_items_in_cart:
                 total_cart_price += item.total_price
             total_cart_price_with_discount = total_cart_price
-            print(total_cart_price)
+
             if used_promo:
                 print('guest with promo')
                 promo_discount_value = used_promo.promo_discount

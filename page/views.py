@@ -38,7 +38,7 @@ def is_email(string):
 def check_email(request):
     return_dict = {}
     email = request.POST.get('email')
-    print(email)
+
     email_error = ''
     if is_email(email):
         email_is_valid = True
@@ -164,7 +164,7 @@ def new(request):
     all_items = Item.objects.filter(is_new=True, is_active=True, is_present=True).order_by('-created_at')
     not_present = Item.objects.filter(is_new=True, is_active=True, is_present=False)
     data = request.GET
-    print(request.GET)
+
     search = data.get('search')
     filter = data.get('filter')
     order = data.get('order')
@@ -285,8 +285,7 @@ def index(request):
     allSubCat = Category.objects.filter(isActive = True, isMain = False).order_by('-id')
     recomended = Item.objects.all().order_by('-views')[:10]
 
-    for i in allSubCat:
-        print(i)
+
 
 
     # show_tags = True
@@ -320,7 +319,7 @@ def item(request, cat_slug, item_slug):
     allSubCat = Category.objects.filter(isActive=True, isMain=False).order_by('-id')
     item = Item.objects.get(name_slug=item_slug)
     name = item.name.split(' ')
-    print(name)
+
     simlar = Item.objects.filter(name__contains=name[0])
     other = Item.objects.filter(category__name_slug=cat_slug)[:5]
     item.views += 1
@@ -359,7 +358,7 @@ def category(request, cat_slug):
         all_items = Item.objects.filter(category=cat, is_active=True).order_by('-created_at')
         allCategories = Category.objects.filter(isActive=True, isMain=True).order_by('-id')
         allSubCat = Category.objects.filter(isActive=True, isMain=False).order_by('-id')
-        print(all_items)
+
         title = cat.page_title
         description = cat.page_description
         keywords = cat.page_keywords
@@ -367,7 +366,7 @@ def category(request, cat_slug):
         raise Http404
         # return render(request, '404.html', locals())
     data = request.GET
-    print(request.GET)
+
     search = data.get('search')
     filter = data.get('filter')
     order = data.get('order')
@@ -487,10 +486,10 @@ def subcategory(request, cat_slug,subcat_slug):
 
         cat = Category.objects.get(name_slug=subcat_slug)
         all_items = Item.objects.filter(category=cat, is_active=True).order_by('-created_at')
-        print(all_items)
+
         allCategories = Category.objects.filter(isActive=True, isMain=True).order_by('-id')
         allSubCat = Category.objects.filter(isActive=True, isMain=False).order_by('-id')
-        print(allSubCat)
+
         title = cat.page_title
         description = cat.page_description
         keywords = cat.page_keywords
@@ -498,7 +497,7 @@ def subcategory(request, cat_slug,subcat_slug):
         raise Http404
         # return render(request, '404.html', locals())
     data = request.GET
-    print(request.GET)
+
     search = data.get('search')
     filter = data.get('filter')
     order = data.get('order')
@@ -576,7 +575,7 @@ def subcategory(request, cat_slug,subcat_slug):
     else:
         items_paginator = Paginator(items, 12)
 
-    print(items)
+
 
     try:
         items = items_paginator.get_page(page)
@@ -600,7 +599,7 @@ def collection(request, collection_slug):
     except:
         return render(request, '404.html', locals())
     data = request.GET
-    print(request.GET)
+
     search = data.get('search')
     filter = data.get('filter')
     order = data.get('order')

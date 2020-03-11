@@ -23,7 +23,7 @@ def add_to_cart(request):
 
 
     data = request.POST
-    print(data)
+
     s_key = request.session.session_key
     item_id = int(data.get('item_id'))
     item_number = int(data.get('item_number'))
@@ -120,7 +120,7 @@ def update_cart(request):
     return_dict = {}
 
     data = request.POST
-    print(data)
+
     item_id = int(data.get('item_id'))
     item_number = int(data.get('item_number'))
 
@@ -185,7 +185,7 @@ def delete_from_main_cart(request):
     return_dict = {}
 
     data = request.POST
-    print(data)
+
     item_id = int(data.get('item_id'))
 
     Cart.objects.get(id=item_id).delete()
@@ -257,7 +257,7 @@ def delete_from_main_cart(request):
 def use_promo(request):
     return_dict = {}
     data = request.POST
-    print(data)
+
     promo_code = data.get('promo_code')
     try:
         code = PromoCode.objects.get(promo_code=promo_code)
@@ -337,7 +337,7 @@ def use_promo(request):
 def sort_filter(request):
     return_dict = {}
     data = request.GET
-    print(data)
+
     search = data.get('search')
     filter = data.get('filter')
     order = data.get('order')
@@ -352,15 +352,15 @@ def sort_filter(request):
     if search:
         search_qs = all_items.filter(name__contains=search)
         items = search_qs
-        print(items)
+
     if filter:
         print('Поиск по фильтру')
         if search_qs:
             items = search_qs.filter(filter__name_slug=filter)
-            print(items)
+
         else:
             items = all_items.filter(filter__name_slug=filter)
-            print(items)
+
 
     return_dict['all_items'] = list()
     for item in items:

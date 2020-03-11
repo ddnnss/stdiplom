@@ -7,7 +7,7 @@ from customuser.models import User, Guest
 def quick_view(request):
     return_dict = {}
     data = request.POST
-    print(data)
+
     item_id = int(data.get('item_id'))
     item = Item.objects.get(id=item_id)
     images = ItemImage.objects.filter(item_id=item_id)
@@ -31,7 +31,7 @@ def quick_view(request):
 
 
 def item_page(request, item_slug):
-    print(request.get_host())
+
     try:
         item = Item.objects.get(name_slug=item_slug)
         item.views += 1
@@ -40,7 +40,7 @@ def item_page(request, item_slug):
         # title = item.name
         # description = item.description
 
-        print(recomended)
+
     except:
         raise Http404
         # return render(request, '404.html', locals())
