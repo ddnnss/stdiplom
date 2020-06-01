@@ -20,10 +20,6 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('category/<cat_slug>/', views.category, name='category'),
-    path('category/<cat_slug>/<subcat_slug>/', views.subcategory, name='subcategory'),
-    path('category/<cat_slug>/<item_slug>', views.item, name='item'),
-    # path('subcategory/<subcat_slug>/', views.subcategory, name='subcategory'),
     path('collection/<collection_slug>/', views.collection, name='collection'),
     path('search/', views.search, name='search'),
     path('about_us/', views.about_us, name='about_us'),
@@ -42,6 +38,11 @@ urlpatterns = [
     path('contacts/', views.contacts, name='contacts'),
     path('reviews/', views.reviews, name='reviews'),
     path('checkout/', views.checkout, name='checkout'),
+    path('<cat_slug>/', views.category, name='category'),
+    path('<cat_slug>/<subcat_slug>/', views.subcategory, name='subcategory'),
+    path('<cat_slug>/<item_slug>', views.item, name='item'),
+    # path('subcategory/<subcat_slug>/', views.subcategory, name='subcategory'),
+
 
     # path('login/', views.login, name='login'),
     # path('logout/', views.logout_page, name='logout'),

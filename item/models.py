@@ -121,6 +121,7 @@ class Item(models.Model):
     views = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
+    order_num = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
         self.name_slug = slugify(self.name)

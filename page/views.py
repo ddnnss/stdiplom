@@ -352,10 +352,21 @@ def category(request, cat_slug):
     #     except:
     #         pass
 
+    # wb = load_workbook(filename='C:/Users/ххх/PycharmProjects/stdiplom/order.xlsx')
+    # sheet = wb.active
+    # max_row = sheet.max_row
+    #
+    # max_column = sheet.max_column
+    # for i in range(1, max_row + 1):
+    #     print(sheet.cell(row=i, column=1).value)
+    #     item = Item.objects.get(old_id=sheet.cell(row=i, column=1).value)
+    #     item.order_num = int(sheet.cell(row=i, column=2).value)
+    #     item.save()
+
     try:
 
         cat = Category.objects.get(name_slug=cat_slug)
-        all_items = Item.objects.filter(category=cat, is_active=True).order_by('-created_at')
+        all_items = Item.objects.filter(category=cat, is_active=True).order_by('order_num')
         allCategories = Category.objects.filter(isActive=True, isMain=True).order_by('-id')
         allSubCat = Category.objects.filter(isActive=True, isMain=False).order_by('-id')
 
@@ -436,7 +447,7 @@ def category(request, cat_slug):
 
         # subcat.views = subcat.views + 1
         # subcat.save()
-        param_order = '-created_at'
+        param_order = 'order_num'
 
     if count:
         items_paginator = Paginator(items, int(count))

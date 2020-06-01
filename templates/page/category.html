@@ -82,6 +82,7 @@
     </div>
     <div class="sort"><b>Сортировка:</b>
          <select  id="per_order"  onchange="per_order()">
+                                        <option {% if param_order == 'order_num' %}selected="selected"{% endif %} value="order_num">По умолчанию</option>
                                         <option {% if param_order == '-created_at' %}selected="selected"{% endif %} value="-created_at">Дате</option>
                                         <option {% if param_order == 'price' %}selected="selected"{% endif %} value="price">Цена &#8593;</option>
                                         <option {% if param_order == '-price' %}selected="selected"{% endif %} value="-price">Цена &#8595;</option>
