@@ -1,0 +1,191 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+
+
+<div id="content">
+<div class="box ocfilter ocfilter-content-top" id="ocfilter-0">
+
+{#  <div class="box-content">#}
+{#    <div class="relative-wrapper">#}
+{#			<div class="button-float" id="button-float-0"><a href="#" id="button-submit-0">Укажите параметры</a></div>#}
+{#		</div>#}
+{#    <form action="">#}
+{##}
+{#            <div class="ocfilter-option">#}
+{#        <div class="option-name">#}
+{#          					Цена&nbsp;<span id="price-from-0">2000</span>&nbsp;-&nbsp;<span id="price-to-0">6000</span> р.									</div>#}
+{##}
+{##}
+{#        <div class="option-values">#}
+{#          					<div id="scale-price-0" class="scale scale-0 ocf-target">#}
+{#						<div class="trackbar" onSelectStart="return false;">#}
+{#							<div class="handler-block left-block"><div class="trackbar-handler left-handler" onDragStart="return false;"></div></div>#}
+{#							<div class="handler-block right-block"><div class="trackbar-handler right-handler" onDragStart="return false;"></div></div>#}
+{#            </div>#}
+{#					</div>#}
+{##}
+{##}
+{##}
+{#					        </div>#}
+{#      </div>#}
+{##}
+{##}
+{##}
+{#				<div class="ocfilter-option" id="option-20">#}
+{#	        <div class="option-name">#}
+{#	          Здания по типу конструкций#}
+{##}
+{#            	        </div>#}
+{##}
+{#	        <div class="option-values">#}
+{##}
+{##}
+{#						<select name="option[2]" class="ocf-target selected">#}
+{#								            	            <option value="p:3059-4490" id="v-cancel-20">Все</option>#}
+{#	            	            	            	            <option value="p:3059-4490;2:4" id="v-240">Металлокаркасные</option>#}
+{#	            	            	            	            <option value="p:3059-4490;2:2" id="v-220" selected="selected">Монолитные</option>#}
+{#	            	            	            	            <option value="p:3059-4490;2:3" id="v-230">Сборные ж/б</option>#}
+{#	            	            	            	            <option value="p:3059-4490;2:5" id="v-250">Кирпичные</option>#}
+{#	            	            	            	            <option value="p:3059-4490;2:6" id="v-260">Панельные</option>#}
+{#	            	            	            	            <option value="p:3059-4490;2:28" id="v-2280">Деревянные</option>#}
+{#	            	            	            	            <option value="p:3059-4490;2:7" id="v-270">Смешанные</option>#}
+{#	            	            	            				<option value="p:3059-4490;2:26" id="v-2260" disabled="disabled">Другие</option>#}
+{#								            	          </select>#}
+{##}
+{##}
+{#            	        </div>#}
+{##}
+{#	        	      </div>#}
+{##}
+{##}
+{#    			<a href="http://st-diplom.ru/pgs/" class="cancel-large button" rel="nofollow">Сбросить</a>#}
+{#    </form>#}
+{#  </div>#}
+
+</div>
+  <div class="breadcrumb">
+        <a href="/">Главная</a>
+         &raquo; <a href="#">Результаты поиска</a>
+      </div>
+  <h1>Результат поиска по запросу : {{ search_string }}</h1>
+
+    <div class="product-filter">
+
+
+  </div>
+  <div class="product-list">
+        {% for item in items %}
+                    {% include 'page/item_card.html' %}
+                {% endfor %}
+
+      </div>
+
+
+    <nav id="items_paginator" class="shop-pagination" aria-label="Shop navigation">
+                                <ul  class="pagination justify-content-end">
+                                {% if items.has_previous %}
+                                    <li class="page-item">
+                                      <a class="page-link" href="?{% if param_search %}&search={{ param_search }}{% endif %}{% if param_filter %}&filter={{ param_filter }}{% endif %}{% if param_order %}&order={{ param_order }}{% endif %}{% if param_count %}&count={{ param_count }}{% endif %}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+
+                                      </a>
+                                    </li>
+                                {% endif %}
+                                    {% for pg in items.paginator.page_range %}
+                                        {% if items.number == pg %}
+                                            <li class="page-item active"><a class="page-link" href="?{% if pg > 1 %}page={{ pg }}{% endif %}{% if param_search %}&search={{ param_search }}{% endif %}{% if param_filter %}&filter={{ param_filter }}{% endif %}{% if param_order %}&order={{ param_order }}{% endif %}{% if param_count %}&count={{ param_count }}{% endif %}">{{pg}}</a></li>
+                                        {% elif pg > items.number|add:'-6' and pg < items.number|add:'6' %}
+                                            <li class="page-item"><a class="page-link" href="?{% if pg > 1 %}page={{ pg }}{% endif %}{% if param_search %}&search={{ param_search }}{% endif %}{% if param_filter %}&filter={{ param_filter }}{% endif %}{% if param_order %}&order={{ param_order }}{% endif %}{% if param_count %}&count={{ param_count }}{% endif %}">{{pg}}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% if items.has_next %}
+                                  <li class="page-item">
+                                    <a class="page-link" href="?page={{ items.paginator.num_pages }}{% if param_search %}&search={{ param_search }}{% endif %}{% if param_filter %}&filter={{ param_filter }}{% endif %}{% if param_order %}&order={{ param_order }}{% endif %}{% if param_count %}&count={{ param_count }}{% endif %}" aria-label="Next">
+                                      <span aria-hidden="true">&raquo;</span>
+
+                                    </a>
+                                  </li>
+                                  {% endif %}
+
+                                </ul>
+
+                            </nav>
+
+
+
+
+
+</div>
+  <script>
+        var last_filter = '';
+        var last_order = '';
+        var last_search = '';
+        let countSelect = document.getElementById('per_page')
+        let orderSelect = document.getElementById('per_order')
+        let subcategorySelect = document.getElementById('subcategory')
+        let townSelect = document.getElementById('town')
+
+
+        function setGetParam(key,value) {
+            if (history.pushState) {
+                var params = new URLSearchParams(window.location.search);
+                params.set(key, value);
+                var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + params.toString();
+
+                window.history.pushState({path:newUrl},'',newUrl);
+            }
+        }
+
+        function removeParam(parameter)
+        {
+            var url=document.location.href;
+            var urlparts= url.split('?');
+
+            if (urlparts.length>=2)
+            {
+                var urlBase=urlparts.shift();
+                var queryString=urlparts.join("?");
+
+                var prefix = encodeURIComponent(parameter)+'=';
+                var pars = queryString.split(/[&;]/g);
+                for (var i= pars.length; i-->0;)
+                    if (pars[i].lastIndexOf(prefix, 0)!==-1)
+                        pars.splice(i, 1);
+                url = urlBase+'?'+pars.join('&');
+                window.history.pushState('',document.title,url); // added this line to push the new url directly to url bar .
+
+            }
+            return url;
+        }
+
+        function per_page() {
+            var count = countSelect.options[countSelect.selectedIndex].value
+            console.log(count);
+
+            setGetParam('count',count);
+            var url =location.href.split('?')[1];
+
+            window.location.href = '?'+url;
+        }
+        function per_order() {
+            var order = orderSelect.options[orderSelect.selectedIndex].value
+            console.log(order);
+
+            setGetParam('order',order);
+            var url =location.href.split('?')[1];
+
+            window.location.href = '?'+url;
+        }
+
+        function clearForm() {
+            let form = document.getElementById('filters_form')
+            form.reset()
+            subcategorySelect.selectedIndex = 0
+            townSelect.selectedIndex = 0
+            form.submit()
+
+        }
+
+    </script>
+{% endblock %}

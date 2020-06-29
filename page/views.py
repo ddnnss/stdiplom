@@ -12,7 +12,7 @@ from django.template.loader import render_to_string
 from django.http import Http404
 
 
-from openpyxl import load_workbook
+#from openpyxl import load_workbook
 
 
 
@@ -496,7 +496,7 @@ def subcategory(request, cat_slug,subcat_slug):
     try:
 
         cat = Category.objects.get(name_slug=subcat_slug)
-        all_items = Item.objects.filter(category=cat, is_active=True).order_by('-created_at')
+        all_items = Item.objects.filter(category=cat, is_active=True).order_by('order_num')
 
         allCategories = Category.objects.filter(isActive=True, isMain=True).order_by('-id')
         allSubCat = Category.objects.filter(isActive=True, isMain=False).order_by('-id')
@@ -578,7 +578,7 @@ def subcategory(request, cat_slug,subcat_slug):
 
         # subcat.views = subcat.views + 1
         # subcat.save()
-        param_order = '-created_at'
+        param_order = 'order_num'
 
     if count:
         items_paginator = Paginator(items, int(count))
@@ -693,21 +693,19 @@ def search(request):
     search_string = request.GET.get('search')
     page = request.GET.get('page')
     param_search = search_string
+    items = None
     try:
         items = Item.objects.filter(name_lower__contains=search_string.lower(), is_active=True)
     except:
-        return render(request, '404.html', locals())
-    if not items:
-        items = Item.objects.filter(name_lower__contains=search_string.lower()[:-1], is_active=True)
-    if not items:
-        items = Item.objects.filter(article__contains=search_string)
-    items_paginator = Paginator(items, 12)
-    try:
-        items = items_paginator.get_page(page)
-    except PageNotAnInteger:
-        items = items_paginator.page(1)
-    except EmptyPage:
-        items = items_paginator.page(items_paginator.num_pages)
+        pass
+    if items:
+        items_paginator = Paginator(items, 12)
+        try:
+            items = items_paginator.get_page(page)
+        except PageNotAnInteger:
+            items = items_paginator.page(1)
+        except EmptyPage:
+            items = items_paginator.page(items_paginator.num_pages)
 
     return render(request, 'page/search.html', locals())
 
